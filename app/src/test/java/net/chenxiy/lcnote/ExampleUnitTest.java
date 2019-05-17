@@ -1,6 +1,12 @@
 package net.chenxiy.lcnote;
 
+import net.chenxiy.lcnote.net.pojo.ProblemData;
+
 import org.junit.Test;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +17,18 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void retrofit(){
+        Repository.getInstance().apiService.getProblemData("").enqueue(new Callback<ProblemData>() {
+            @Override
+            public void onResponse(Call<ProblemData> call, Response<ProblemData> response) {
+                System.out.println(response.body().getUserName());
+            }
+
+            @Override
+            public void onFailure(Call<ProblemData> call, Throwable t) {
+
+            }
+        });
+
     }
 }

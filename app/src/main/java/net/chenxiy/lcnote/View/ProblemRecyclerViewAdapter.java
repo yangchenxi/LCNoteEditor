@@ -1,5 +1,6 @@
 package net.chenxiy.lcnote.View;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import net.chenxiy.lcnote.R;
+import net.chenxiy.lcnote.activity.NotePadActivity;
 import net.chenxiy.lcnote.databinding.ProblemItemBinding;
 import net.chenxiy.lcnote.net.pojo.StatStatusPair;
 import net.chenxiy.lcnote.net.pojo.Stat;
@@ -102,8 +104,9 @@ public class ProblemRecyclerViewAdapter extends RecyclerView.Adapter<ProblemRecy
         public ProblemViewHolder(@NonNull View itemView,ProblemItemBinding mbinding) {
             super(itemView);
             itemBinding=mbinding;
+
         }
-        public void bind(StatStatusPair data) {
+        public void bind(final StatStatusPair data) {
             itemBinding.setProblemStat(data.getStat());
             if(data.getStatus()!=null&&data.getStatus().equals("ac")){
                 itemBinding.problemtitle.setTextColor(Color.GREEN);
@@ -111,6 +114,15 @@ public class ProblemRecyclerViewAdapter extends RecyclerView.Adapter<ProblemRecy
                 itemBinding.problemtitle.setTextColor(Color.BLACK);
             }
 
+            itemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(v.getContext(), NotePadActivity.class);
+                    intent.putExtra("titleSlug",data.getStat().getQuestionTitleSlug());
+                    intent.putExtra("title",data.getStat().getQuestionTitle());
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }

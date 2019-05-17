@@ -9,7 +9,7 @@
 #### 1. Oauth2.0 URL:
 
 ```
-https://github.com/login/oauth/authorize?client_id=d9daf1e6ea82bb4149f6&redirect_uri=LCNote%3A%2F%2FOauthResp&scope=public_repo&response_type=token&response_mode=form_post
+https://github.com/login/oauth/authorize?client_id=d9daf1e6ea82bb4149f6&redirect_uri=lcnote%3A%2F%2FOauthResp&scope=public_repo&response_type=token&response_mode=form_post
 ```
 
 **Client ID:** d9daf1e6ea82bb4149f6

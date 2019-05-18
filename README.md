@@ -20,9 +20,9 @@ Development DOC: [Document](./DOC/API.md)
 
 ## ScreenShots
 
-| <img src="./art/screenshot1.png" width="256" alt="logo">| <img src="./art/screenshot2.png" width="256" alt="logo">|<img src="./art/screenshot3.png" width="256" alt="logo"> |
+| <img src="./art/screenshot0.png" width="256" alt="logo">| <img src="./art/screenshot1.png" width="256" alt="logo">| <img src="./art/screenshot2.png" width="200" alt="logo">|
 |:-------------------------:|:-------------------------:|:-------------------------:|
-|<img src="./art/screenshot4.png" width="256" alt="logo">|<img src="./art/screenshot5.png" width="512" alt="logo">||
+|<img src="./art/screenshot3.png" width="256" alt="logo"> |<img src="./art/screenshot4.png" width="256" alt="logo">|<img src="./art/screenshot5.png" width="512" alt="logo">|
 
 ## Download
 

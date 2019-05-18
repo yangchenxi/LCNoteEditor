@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import net.chenxiy.lcnote.MainActivity;
@@ -46,12 +47,17 @@ public class NotePadActivity extends AppCompatActivity {
     EditText editText;
     Uri uri;
     int CAMERA_REQUEST=0;
+
+
+    FloatingActionButton cameraBtn;
     private static final String TAG = "NotePadActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_pad);
         Intent intent=getIntent();
+        cameraBtn=findViewById(R.id.floatingActionButton);
+
         Title=intent.getStringExtra("titleSlug");
         editText=findViewById(R.id.quoteTextArea);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -63,12 +69,14 @@ public class NotePadActivity extends AppCompatActivity {
             public void onResponse(Call<NoteData> call, Response<NoteData> response) {
                 if(response.body()!=null){
                     editText.setText(response.body().getData().getQuestion().getNote());
+                }else {
+                    Toast.makeText(getApplicationContext(), "FAIL", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<NoteData> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(),"Network Failure",Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -76,6 +84,8 @@ public class NotePadActivity extends AppCompatActivity {
         if (requestCode == CAMERA_REQUEST) {
             CompressAndUploadPhoto task=new CompressAndUploadPhoto();
             task.execute(uri);
+            cameraBtn.hide();
+            getSupportActionBar().setTitle("Processing....");
             //Log.d(TAG, "onActivityResult: "+encoded);
         }
 
@@ -101,7 +111,7 @@ public class NotePadActivity extends AppCompatActivity {
             final UploadRequest request=new UploadRequest();
             Committer com=new Committer();
             com.setName("LCNote Android");
-            com.setEmail("LCNote@chenxiy.net");
+            com.setEmail("ycx@live.cn");
             request.setCommitter(com);
             long time = new Date().getTime();
             request.setMessage("Add "+Title);
@@ -119,14 +129,28 @@ public class NotePadActivity extends AppCompatActivity {
                                 insert, 0,insert.length());
                         Log.d(TAG, "onResponse: "+Url);
                     }
+
+                    getSupportActionBar().setTitle(Title);
+                    cameraBtn.show();
                 }
 
                 @Override
                 public void onFailure(Call<UploadResultInfo> call, Throwable t) {
 
+                    getSupportActionBar().setTitle(Title);
+                    cameraBtn.show();
                 }
+
+
             });
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            getSupportActionBar().setTitle("Uploading To GitHub....");
+
         }
     }
 
@@ -157,18 +181,26 @@ public class NotePadActivity extends AppCompatActivity {
         }
     public void saveToCloud(final View view) {
         Log.d(TAG, "saveToCloud: ");
+        getSupportActionBar().setTitle("Saving To ☁️...");
         Repository.getInstance().updateNoteBookData(Title,editText.getText().toString()).enqueue(new Callback<UpDateNoteData>() {
             @Override
             public void onResponse(Call<UpDateNoteData> call, Response<UpDateNoteData> response) {
-                editText.setText(response.body().getData().getUpdateNote().getQuestion().getNote());
+                if(response.body()!=null) {
+                    editText.setText(response.body().getData().getUpdateNote().getQuestion().getNote());
 
-                Toast.makeText(view.getContext(),"Update Success!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), "Save Note Success!", Toast.LENGTH_LONG).show();
+                    getSupportActionBar().setTitle(Title);
+                }else {
+                    Toast.makeText(view.getContext(), "FAIL!", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onFailure(Call<UpDateNoteData> call, Throwable t) {
-
+                getSupportActionBar().setTitle(Title);
+                Toast.makeText(view.getContext(),"Network Failure",Toast.LENGTH_LONG).show();
             }
+
         });
 
     }

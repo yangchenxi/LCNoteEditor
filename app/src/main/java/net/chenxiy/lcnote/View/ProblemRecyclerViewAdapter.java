@@ -109,7 +109,7 @@ public class ProblemRecyclerViewAdapter extends RecyclerView.Adapter<ProblemRecy
         public void bind(final StatStatusPair data) {
             itemBinding.setProblemStat(data.getStat());
             if(data.getStatus()!=null&&data.getStatus().equals("ac")){
-                itemBinding.problemtitle.setTextColor(Color.GREEN);
+                itemBinding.problemtitle.setTextColor(Color.parseColor("#399350"));
             }else{
                 itemBinding.problemtitle.setTextColor(Color.BLACK);
             }

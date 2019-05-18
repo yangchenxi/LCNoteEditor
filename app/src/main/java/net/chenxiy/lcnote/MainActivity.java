@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mPreferences = getSharedPreferences(LoginActivity.sharedPrefFile, MODE_PRIVATE);
         if(mPreferences.getString("token","").isEmpty()){
             Intent intent=new Intent(this,LoginActivity.class);
@@ -144,7 +145,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+        getSupportActionBar().setTitle("Loading Leetcode...");
+        Repository.getInstance().apiService.getProblemData(CookieManager.getInstance().getCookie("https://leetcode.com"))
+                .enqueue(new Callback<ProblemData>() {
+                    @Override
+                    public void onResponse(Call<ProblemData> call, Response<ProblemData> response) {
+                        if(response.body()!=null) {
+                            adapter.setData(response.body().getStatStatusPairs());
+                            getSupportActionBar().setTitle(response.body().getNumSolved()+"/"+response.body().getNumTotal()+" Solved");
+                            Log.d(TAG, "onResponse: "+response.body().getUserName());
+                        }else {
+                            getSupportActionBar().setTitle("Fail");
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<ProblemData> call, Throwable t) {
+                        Log.e(TAG, "onFailure: ",t );
+                        getSupportActionBar().setTitle("Network ERROR");
+                    }
+                });
 
     }
 
@@ -169,22 +189,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        Repository.getInstance().apiService.getProblemData(CookieManager.getInstance().getCookie("https://leetcode.com"))
-                .enqueue(new Callback<ProblemData>() {
-                    @Override
-                    public void onResponse(Call<ProblemData> call, Response<ProblemData> response) {
-                        if(response.body()!=null) {
-                            adapter.setData(response.body().getStatStatusPairs());
 
-                            Log.d(TAG, "onResponse: "+response.body().getUserName());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ProblemData> call, Throwable t) {
-                        Log.e(TAG, "onFailure: ",t );
-                    }
-                });
     }
 
     public void Login(View view) {
@@ -212,7 +217,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.about:
-
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/yangchenxi/LCNoteEditor"));
+                startActivity(browserIntent);
 
 
                 break;

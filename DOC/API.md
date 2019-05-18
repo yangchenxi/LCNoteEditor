@@ -70,7 +70,7 @@ cache-control: no-cache
  }
 ```
 
-**[Response](./lsRepoCallBack.json)**
+**[Response](./upFileResponse.json)**
 
 **Image URL:** Response.content.download_url
 

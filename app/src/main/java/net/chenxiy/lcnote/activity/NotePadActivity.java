@@ -1,6 +1,8 @@
 package net.chenxiy.lcnote.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
@@ -9,8 +11,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -56,8 +60,8 @@ public class NotePadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_pad);
         Intent intent=getIntent();
+        getPermission();
         cameraBtn=findViewById(R.id.floatingActionButton);
-
         Title=intent.getStringExtra("titleSlug");
         editText=findViewById(R.id.quoteTextArea);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -82,6 +86,8 @@ public class NotePadActivity extends AppCompatActivity {
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST) {
+            Log.d(TAG, "onActivityResult: "+resultCode);
+            if(resultCode==0)return;
             CompressAndUploadPhoto task=new CompressAndUploadPhoto();
             task.execute(uri);
             cameraBtn.hide();
@@ -165,6 +171,7 @@ public class NotePadActivity extends AppCompatActivity {
         return File.createTempFile(part, ext, tempDir);
     }
         public void InsertPic(View view) {
+
             File tempFile = null;
             try {
                 tempFile = createTemporaryFile("camera", ".png");
@@ -203,5 +210,28 @@ public class NotePadActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    public void getPermission(){
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        0);
+
+
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+
+        } else {
+            // Permission has already been granted
+        }
     }
 }

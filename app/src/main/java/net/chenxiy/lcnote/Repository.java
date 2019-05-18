@@ -5,6 +5,8 @@ import android.webkit.CookieManager;
 import net.chenxiy.lcnote.net.ApiEndpointInterface;
 import net.chenxiy.lcnote.net.RetrofitInstance;
 import net.chenxiy.lcnote.net.pojo.NoteData;
+import net.chenxiy.lcnote.net.pojo.lcRequest.UpdateNoteRequest;
+import net.chenxiy.lcnote.net.pojo.lcRequest.Variables;
 import net.chenxiy.lcnote.net.pojo.updatenote.UpDateNoteData;
 
 
@@ -57,17 +59,17 @@ public class Repository {
     }
 
     public Call<UpDateNoteData> updateNoteBookData(String titleSlug, String content){
-        StringBuilder sb=new StringBuilder();
-        sb.append("{\"operationName\":\"updateNote\",\"variables\":{\"titleSlug\":\"");
-        sb.append(titleSlug);
-        sb.append("\",\"content\":\"");
-        sb.append(content);
-        sb.append("\"},\"query\":\"mutation updateNote($titleSlug: String!, $content: String!) {\\n  updateNote(titleSlug: $titleSlug, content: $content) {\\n    ok\\n    error\\n    question {\\n      questionId\\n      note\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}");
-
+        UpdateNoteRequest requestBody=new UpdateNoteRequest();
+        requestBody.setOperationName("updateNote");
+        requestBody.setQuery("mutation updateNote($titleSlug: String!, $content: String!) {\n  updateNote(titleSlug: $titleSlug, content: $content) {\n    ok\n    error\n    question {\n      questionId\n      note\n      __typename\n    }\n    __typename\n  }\n}\n");
+        Variables v=new Variables();
+        v.setTitleSlug(titleSlug);
+        v.setContent(content);
+        requestBody.setVariables(v);
         return apiService.updateNoteData(CookieManager.getInstance().getCookie("https://leetcode.com"),
-                "https://leetcode.com",
+                "https://leetcode.com/problems/"+titleSlug+"/",
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0",
                 getCookie("https://leetcode.com","csrftoken"),
-                "application/json",RequestBody.create(MediaType.parse("text/plain"), sb.toString()));
+                "application/json",requestBody);
     }
 }

@@ -17,7 +17,7 @@
         android:enabled="true"
         android:focusable="true"
         android:gravity="top"
-        android:hint="Type your markdown here\n * Always Refresh Your Computer Brower After Upload Button is Clicked \n * It may take a long time before you get the photo linke embeded"
+        android:hint="Type your markdown here\n * Always Refresh Your Computer Browser After Upload Button is Clicked \n * It may take a long time before you get the photo link embedded"
         android:inputType="textMultiLine"
         android:isScrollContainer="true"
         android:minLines="100"

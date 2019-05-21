@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.widget.Toast;
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mPreferences = getSharedPreferences(LoginActivity.sharedPrefFile, MODE_PRIVATE);
         if(mPreferences.getString("token","").isEmpty()){
             Intent intent=new Intent(this,LoginActivity.class);
@@ -154,10 +154,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if(response.body()!=null) {
                             adapter.setData(response.body().getStatStatusPairs());
                             getSupportActionBar().setTitle(response.body().getNumSolved()+"/"+response.body().getNumTotal()+" Solved");
+
                             Log.d(TAG, "onResponse: "+response.body().getUserName());
                         }else {
                             getSupportActionBar().setTitle("Fail");
                         }
+
                     }
 
                     @Override
@@ -211,12 +213,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Log.d(TAG, "onNavigationItemSelected: "+menuItem.getItemId());
         switch (menuItem.getItemId()) {
-            case R.id.login:
-                Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-
-
-                break;
+//            case R.id.login:
+//                Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+//                startActivity(intent);
+//
+//
+//                break;
             case R.id.about:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/yangchenxi/LCNoteEditor"));
                 startActivity(browserIntent);
@@ -234,4 +236,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(Gravity.LEFT);
         return true;
     }
+
+
 }

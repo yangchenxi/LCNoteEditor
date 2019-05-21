@@ -3,6 +3,7 @@ package net.chenxiy.lcnote.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
@@ -26,6 +27,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -51,6 +53,7 @@ public class NotePadActivity extends AppCompatActivity {
     EditText editText;
     Uri uri;
     int CAMERA_REQUEST=0;
+    public static int compressQuality=1;
 
 
     FloatingActionButton cameraBtn;
@@ -58,7 +61,10 @@ public class NotePadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_note_pad);
+
         Intent intent=getIntent();
         getPermission();
         cameraBtn=findViewById(R.id.floatingActionButton);
@@ -101,17 +107,17 @@ public class NotePadActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Uri... uris) {
-            ContentResolver cr = getContentResolver();
-
 
             Bitmap photo = null;
+            File imageFile=new File(uri.getPath());
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             try {
-                photo = MediaStore.Images.Media.getBitmap(cr,uri);
+            photo=new Compressor(getApplicationContext()).setQuality(compressQuality).compressToBitmap(imageFile);
             } catch (IOException e) {
+                getSupportActionBar().setTitle("Image File Process Error");
                 e.printStackTrace();
             }
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
+            photo.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream .toByteArray();
             String encoded = Base64.encodeToString(byteArray,Base64.DEFAULT);
             final UploadRequest request=new UploadRequest();
@@ -233,5 +239,10 @@ public class NotePadActivity extends AppCompatActivity {
         } else {
             // Permission has already been granted
         }
+
+
     }
+
+
+
 }

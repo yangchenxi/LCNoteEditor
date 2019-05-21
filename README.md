@@ -48,6 +48,9 @@ Development DOC: [Document](./DOC/API.md)
 
 ### [Release-V2.0 2019-05-21](https://github.com/yangchenxi/LCNoteEditor/releases/download/2.0/app-release.apk)
 
+## Library:
+
+https://github.com/zetbaitsu/Compressor
 
 ## Claim:
 

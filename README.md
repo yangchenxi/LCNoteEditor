@@ -9,11 +9,11 @@
 
 <img src="./art/lcnote.png" width="128" alt="logo">
 
-LCNoteEditor is an Android App helping Leetcode user take photo and add to their leetcode notebook.
+LCNoteEditor is an Android App helping Leetcode users take photo and add to their leetcode notebook.
 
 Using your github repo to host photos.
 
-Using **Oauth2.0** and Android WebView
+Using **Oauth2.0** and Android Webkit.
 
 Development DOC: [Document](./DOC/API.md)
 
@@ -24,13 +24,40 @@ Development DOC: [Document](./DOC/API.md)
 |:-------------------------:|:-------------------------:|:-------------------------:|
 |<img src="./art/screenshot3.png" width="256" alt="logo"> |<img src="./art/screenshot4.png" width="256" alt="logo">|<img src="./art/screenshot5.png" width="512" alt="logo">|
 
+# Usage (Please read carefully or you may lose your data!):
+
+1. Create an new public repo in your github to host the photo.
+
+2. Make sure your leetcode account is connected to your github account via Oauth2.0.
+
+2. Download the app and Login.
+
+3. Select the repo to host the photo.
+
+4. In the note edit activity, press camera button to take a photo.
+
+5. The photo will be compressed and upload to the github, may take a long time, please wait...
+
+6. **Don't forget to click upload button when you close the note.**
+
+7. **Refresh your browser immediately if the same note on the browser is open.**
+
+## [Authentification Process](./art/auth.png)
+
 ## Download
 
-### [Release-V1.0 2019-05-18](https://github.com/yangchenxi/LCNoteEditor/releases/download/1.0/app-release.apk)
+### [Release-V2.0 2019-05-21](https://github.com/yangchenxi/LCNoteEditor/releases/download/2.0/app-release.apk)
+
+
+## Claim:
+
+This is a very basic version, more functions can be added to this app, welcome to fork (￣▽￣)~*
 
 ## License:
 
 Copyright(c) 2019 Chenxi Yang
+
+Busy Solving Leetcode Problems...
 
 MIT License
 
